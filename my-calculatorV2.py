@@ -33,7 +33,17 @@ def calculate(expression):
                     i += 1
                 numbers.append(float(number))
                 continue
-            
+
+            elif expression[i] == '-' and (i == 0 or expression[i-1] in "+-*/^("):
+                # Handle negative numbers
+                number = "-"
+                i += 1
+                while i < len(expression) and (expression[i].isdigit() or expression[i] == '.'):
+                    number += expression[i]
+                    i += 1
+                numbers.append(float(number))
+                continue
+
             elif expression[i] in priorities:  # Read an operator
                 while (operators and 
                        priorities[operators[-1]] >= priorities[expression[i]]):
