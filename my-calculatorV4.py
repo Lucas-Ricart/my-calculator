@@ -7,7 +7,6 @@ E = 2.718281828459045
 
 # Initialize history
 history = {}
-reset_history = {}
 count = 1
 
 # Functions for mathematical operations
@@ -107,7 +106,7 @@ def format_result(result):
     return result  # Return as is if it's not a number
 
 # Main interaction loop
-def request_expression(history, reset_history, count):
+def request_expression(history, count):
     """Prompt the user for mathematical expressions to evaluate."""
     print("Welcome to the advanced calculator!")
     print("Type 'quit' to exit.")
@@ -123,8 +122,10 @@ def request_expression(history, reset_history, count):
         elif expression.lower() == "history":
             if history:
                 print("History of operations:")
-                for key, value in history.items():
-                    print(f"{key}: {value}")
+                item = {}
+                for item in history:
+                    for expression, result in history[item].items() :
+                        print(expression,'=',result)
             else:
                 print("No operations in history.")
 
@@ -161,10 +162,8 @@ if __name__ == "__main__":
     try:
         with open("history.json", "r") as f:
             history = json.load(f)
-        reset_history = history.copy()
         count = len(history) + 1
     except (FileNotFoundError, json.JSONDecodeError):
         history = {}
-        reset_history = {}
 
-    request_expression(history, reset_history, count)
+    request_expression(history, count)
